@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="content-wrapper pb-0">
+<div class="content-wrapper p-0">
 	<div class="page-header">
 		<h3 class="page-title">Hotels</h3>
 		<nav aria-label="breadcrumb">
@@ -18,26 +18,38 @@
 					<form class="forms-sample" method="GET" action="{{ route('hotel.search') }}">
 						<div class="row form-group">
 							<label>City or Destination</label>
-							<select name="destination" class="js-example-basic-single" style="width: 100%;" required>
+							<select name="destination" style="width: 100%;" required>
 								<option value="" disabled selected>Select City</option>
 								@foreach($cities as $city) 
 									<option value="{{'CTY-'.$city->id}}">{{ $city->name }}, {{ $city->country->name }}</option>
 								@endforeach
 							</select>
+							@error('destination')
+								<small class="text-danger"> {{ $message }}</small>
+							@enderror
 						</div>
 
 						<div class="row form-group">
 							<div class="col-12 col-md-5 p-1">
 								<label>Check In</label>
 								<input type="text" id="hotel_checkin" name="checkin" class="form-control hotel-checkin" placeholder="DD-MMM-YYYY" readonly="" style="background-color:white;" required>
+								@error('checkin')
+									<small class="text-danger"> {{ $message }}</small>
+								@enderror
 							</div>
 							<div class="col-12 col-md-5 p-1">
 								<label>Check Out</label>
 								<input type="text" id="hotel_checkout" name="checkout" class="form-control hotel-checkout" placeholder="DD-MMM-YYYY" readonly="" style="background-color:white;" required>
+								@error('checkout')
+									<small class="text-danger"> {{ $message }}</small>
+								@enderror
 							</div>
 							<div class="col-12 col-md-2 p-1">
 								<label>Duration</label>
 								<input type="text" id="hotel_duration" name="duration" class="form-control hotel_duration" readonly="" style="background-color:white;" required>
+								@error('duration')
+									<small class="text-danger"> {{ $message }}</small>
+								@enderror
 							</div>
 						</div>
 
@@ -45,14 +57,23 @@
 							<div class="col-12 col-md-4 p-1">
 								<label>Rooms</label>
 								<input type="number" min="1" max="6" value="1" id="hotel_rooms" name="rooms" class="form-control" required>
+								@error('rooms')
+									<small class="text-danger"> {{ $message }}</small>
+								@enderror
 							</div>
 							<div class="col-12 col-md-4 p-1">
 								<label>Adults</label>
 								<input type="number" min="1" max="15" value="1" id="hotel_adults" name="adults" class="form-control" required>
+								@error('adults')
+									<small class="text-danger"> {{ $message }}</small>
+								@enderror
 							</div>
 							<div class="col-12 col-md-4 p-1">
 								<label>Children</label>
 								<input type="number" min="0" max="6" value="0" id="hotel_children" name="children" class="form-control" required >
+								@error('children')
+									<small class="text-danger"> {{ $message }}</small>
+								@enderror
 							</div>
     					</div>
 						<div id="hotel-search-child-ages" class="row form-group">
@@ -63,5 +84,5 @@
 			</div>
 		</div>
 	</div>
-</div
+</div>
 @endsection

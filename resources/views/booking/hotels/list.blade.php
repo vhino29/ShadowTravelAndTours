@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="content-wrapper pb-0">
+<div class="content-wrapper p-0">
 	<div class="page-header">
 		<h3 class="page-title">Hotels</h3>
 		<nav aria-label="breadcrumb">
@@ -12,8 +12,7 @@
 			</ol>
 		</nav>
 	</div>
-	<div class="row">
-		fldkhfdkgjhfklg
-	</div>
+
+	<hotel-list v-bind:search-data = "{{ json_encode($searchData) }}"/>
 </div>
 @endsection

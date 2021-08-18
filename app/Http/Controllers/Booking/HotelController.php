@@ -12,6 +12,8 @@ use App\Models\API\Hotel;
 
 use App\Models\API\City;
 
+use Carbon\Carbon;
+
 class HotelController extends Controller
 {
     private $AppUtil;
@@ -44,6 +46,61 @@ class HotelController extends Controller
             'children' => 'required|min:0',
         ]);
 
-        return view('booking.hotels.list');
+        $errors = array();
+
+        $destination = explode("-", $request->destination);
+
+        if(count($destination) != 2){
+            $errors['destination'] = array('Invalid destination.');
+        }
+
+        if($destination[0] != "CTY"){
+            $errors['destination'] = array('Invalid destination.');
+        }
+
+        if(intval($destination[1]) <= 0){
+            $errors['destination'] = array('Invalid destination.');
+        }
+
+        $checkin = Carbon::parse($request->checkin)->format('Y-m-d');
+        $checkout = Carbon::parse($request->checkout)->format('Y-m-d');
+
+        if($checkin == null){
+            $errors['checkin'] = array('Invalid checkin date.');
+        }
+
+        if($checkout == null){
+            $errors['checkout'] = array('Invalid checkout date.');
+        }
+
+        $childAge = array();
+        $noChildren = intval($request->children);
+        for ($i=1; $i <= $noChildren; $i++) { 
+            if($request['child_age_'.$i] != null){
+                array_push($childAge, intval($request['child_age_'.$i]));
+            }
+        }
+
+        if($noChildren !== count($childAge)){
+            $errors['children'] = array('Invalid number of children.');
+        }
+
+        if(count($errors)){
+            return back()->withErrors($errors)->withInput();
+        }
+
+        $searchData = [
+            'type'      => $destination[0],
+            'id'        => intval($destination[1]),
+            'checkin'   => $checkin,
+            'checkout'  => $checkout,
+            'rooms'     => intval($request->rooms),
+            'adults'    => intval($request->adults),
+            'children'  => intval($request->children),
+            'childage'  => $childAge
+        ];
+
+
+        return view('booking.hotels.list', compact('searchData'));
     }
 }

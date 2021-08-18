@@ -1,53 +1,56 @@
 
 $(function(){
-    document.getElementById('hotel_children').addEventListener('change', function() {
-        var children = parseInt($('#hotel_children').val());
+    if(document.getElementById('hotel_children') != null){
+        document.getElementById('hotel_children').addEventListener('change', function() {
+            var children = parseInt($('#hotel_children').val());
 
-        const element = document.getElementById("hotel-search-child-ages");
+            const element = document.getElementById("hotel-search-child-ages");
 
-        for (var i = 1; i <= 6; i++) {
+            for (var i = 1; i <= 6; i++) {
 
-            var createElement = true;
-            const childElement = document.getElementById('child-age-div-'+i);
+                var createElement = true;
+                const childElement = document.getElementById('child-age-div-'+i);
 
-            if(children < i){
-                createElement = false;
+                if(children < i){
+                    createElement = false;
+                }
+
+                if(createElement && childElement != null){
+                    createElement = false;
+                }
+
+                if(createElement){
+                    const newDiv = document.createElement('div');
+                    newDiv.className = 'col-12 col-md-3 p-1';
+                    newDiv.id = 'child-age-div-'+i;
+
+                    const newLabel = document.createElement('label');
+                    const newContent = document.createTextNode("Child " + i + " Age");
+                    newLabel.appendChild(newContent);
+
+                    newDiv.appendChild(newLabel);
+
+                    const newInput = document.createElement('input');
+                    newInput.className = 'form-control';
+                    newInput.id = 'hotel-room-child-age-'+i;
+                    newInput.name='child_age_'+i;
+                    newInput.setAttribute("type", "number");
+                    newInput.setAttribute("min", "0");
+                    newInput.setAttribute("max", "17");
+                    newInput.setAttribute("value", "0");
+                    newInput.setAttribute("required", "");
+
+                    newDiv.appendChild(newInput);
+
+                    element.appendChild(newDiv);                
+                }
+                else if(children < i && childElement != null){
+                    element.removeChild(childElement);
+                }
             }
+        });
+    }
 
-            if(createElement && childElement != null){
-                createElement = false;
-            }
-
-            if(createElement){
-                const newDiv = document.createElement('div');
-                newDiv.className = 'col-12 col-md-3 p-1';
-                newDiv.id = 'child-age-div-'+i;
-
-                const newLabel = document.createElement('label');
-                const newContent = document.createTextNode("Child " + i + " Age");
-                newLabel.appendChild(newContent);
-
-                newDiv.appendChild(newLabel);
-
-                const newInput = document.createElement('input');
-                newInput.className = 'form-control';
-                newInput.id = 'hotel-room-child-age-'+i;
-                newInput.name='child_age_'+i;
-                newInput.setAttribute("type", "number");
-                newInput.setAttribute("min", "0");
-                newInput.setAttribute("max", "17");
-                newInput.setAttribute("value", "0");
-                newInput.setAttribute("required", "");
-
-                newDiv.appendChild(newInput);
-
-                element.appendChild(newDiv);                
-            }
-            else if(children < i && childElement != null){
-                element.removeChild(childElement);
-            }
-        }
-   });
 
     var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     var displayDateFormat = 'dd mmm yyyy';
