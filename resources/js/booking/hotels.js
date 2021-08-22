@@ -96,15 +96,21 @@ $(function(){
 
         if(checkInMoment != null && checkOutMoment != null)
         {
+            duration = 0;
             if(checkInMoment >= checkOutMoment){
                 duration = 1;
                 $('#hotel_checkout').val(checkInMoment.add(duration, 'days').format('DD MMM YYYY'));
-                $('#hotel_duration').val(duration);
             }
             else {
                 duration = checkOutMoment.diff(checkInMoment, 'days');
-                $('#hotel_duration').val(duration);
             }
+
+            if(duration > 14){
+                duration = 14
+                $('#hotel_checkout').val(checkInMoment.add(duration, 'days').format('DD MMM YYYY'));
+            }
+
+            $('#hotel_duration').val(duration);
         }
     }
 });

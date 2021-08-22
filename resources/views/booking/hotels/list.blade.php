@@ -13,6 +13,6 @@
 		</nav>
 	</div>
 
-	<hotel-list v-bind:search-data = "{{ json_encode($searchData) }}"/>
+	<hotel-list v-bind:search_data = "{{ json_encode($searchData) }}"/>
 </div>
 @endsection

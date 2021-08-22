@@ -35,3 +35,4 @@ Route::get('/home', [HotelController::class, 'HotelBooking'])->name('home');
  * ************************************/
 Route::get('/hotels-booking', [HotelController::class, 'HotelBooking'])->name('hotel.booking');
 Route::get('/hotels-list', [HotelController::class, 'HotelSearch'])->name('hotel.search');
+Route::get('/hotel-details', [HotelController::class, 'HotelDetails'])->name('hotel.details');

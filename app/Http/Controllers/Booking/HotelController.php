@@ -97,10 +97,77 @@ class HotelController extends Controller
             'rooms'     => intval($request->rooms),
             'adults'    => intval($request->adults),
             'children'  => intval($request->children),
-            'childage'  => $childAge
+            'childAge'  => $childAge
         ];
-
 
         return view('booking.hotels.list', compact('searchData'));
     }
+
+    public function HotelDetails(Request $request) 
+    {
+        $validatedData = $request->validate([
+            'type' => 'required',
+            'id' => 'required|numeric',
+            'checkin' => 'required|date',
+            'checkout' => 'required|date',
+            'rooms' => 'required|min:1|max:6',
+            'adults' => 'required|min:1|max:15',
+            'children' => 'required|min:0',
+            'api' => 'required',
+            'hotelid' => 'required|numeric',
+            'searchid' => 'required|numeric',
+        ]);
+
+        $errors = array();
+
+        if($request->type != "CTY"){
+            $errors['type'] = array('Invalid type.');
+        }
+
+        if(intval($request->id) <= 0){
+            $errors['id'] = array('Invalid city id.');
+        }
+
+        $checkin = Carbon::parse($request->checkin)->format('Y-m-d');
+        $checkout = Carbon::parse($request->checkout)->format('Y-m-d');
+
+        if($checkin == null){
+            $errors['checkin'] = array('Invalid checkin date.');
+        }
+
+        if($checkout == null){
+            $errors['checkout'] = array('Invalid checkout date.');
+        }
+
+        $childAge = array();
+        $noChildren = intval($request->children);
+        if($noChildren > 0){
+            $childAge = explode(",",$request->childAge);
+            if($noChildren !== count($childAge)){
+                $errors['children'] = array('Invalid number of children.');
+            }
+        }
+
+        if(count($errors)){
+            return back()->withErrors($errors)->withInput();
+        }
+
+        $hotelData = [
+            'type'      => $request->type,
+            'id'        => intval($request->id),
+            'checkin'   => $checkin,
+            'checkout'  => $checkout,
+            'rooms'     => intval($request->rooms),
+            'adults'    => intval($request->adults),
+            'children'  => intval($request->children),
+            'childAge'  => $childAge,
+            'api'       => $request->rooms,
+            'hotelid'   => intval($request->hotelid),
+            'searchid'  => intval($request->hotelid),
+        ];
+
+        return view('booking.hotels.details', compact('hotelData'));
+    }
+
+
 }

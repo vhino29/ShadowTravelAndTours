@@ -45,4 +45,33 @@ class Hotel extends Model
         'duid',
     ];
     
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'auid',
+        'uuid',
+        'duid',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    /**
+     * Get the Picture
+     */
+    public function picture()
+    {
+        return $this->hasOne(HotelPicture::class, 'hotel_id')->oldest();
+    }
+
+    /**
+     * Get the Pictures
+     */
+    public function pictures()
+    {
+        return $this->hasMany(HotelPicture::class, 'hotel_id');
+    }
 }
